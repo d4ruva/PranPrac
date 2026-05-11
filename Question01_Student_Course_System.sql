@@ -1,0 +1,36 @@
+-- Question 1: Student Course System
+
+CREATE TABLE Student(
+Sid INT PRIMARY KEY,
+Sname VARCHAR(50) NOT NULL,
+City VARCHAR(50)
+);
+
+CREATE TABLE Course(
+Cid INT PRIMARY KEY,
+Cname VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE Enrollment(
+Sid INT,
+Cid INT,
+Year INT,
+PRIMARY KEY(Sid, Cid),
+FOREIGN KEY(Sid) REFERENCES Student(Sid),
+FOREIGN KEY(Cid) REFERENCES Course(Cid)
+);
+
+INSERT INTO Student VALUES(1,'Amit','Pune');
+INSERT INTO Student VALUES(2,'Neha','Mumbai');
+
+INSERT INTO Course VALUES(101,'DBMS');
+INSERT INTO Course VALUES(102,'Java');
+
+INSERT INTO Enrollment VALUES(1,101,2025);
+INSERT INTO Enrollment VALUES(2,102,2025);
+
+SELECT * FROM Student WHERE City='Pune';
+
+SELECT Cid, COUNT(Sid) AS Student_Count
+FROM Enrollment
+GROUP BY Cid;

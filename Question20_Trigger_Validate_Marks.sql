@@ -1,0 +1,16 @@
+-- Question 20: Validate Marks
+
+CREATE TABLE Student(
+Sid INT,
+Marks INT
+);
+
+CREATE OR REPLACE TRIGGER trg_marks
+BEFORE INSERT OR UPDATE ON Student
+FOR EACH ROW
+BEGIN
+IF :NEW.Marks<0 OR :NEW.Marks>100 THEN
+RAISE_APPLICATION_ERROR(-20003,'Invalid Marks');
+END IF;
+END;
+/

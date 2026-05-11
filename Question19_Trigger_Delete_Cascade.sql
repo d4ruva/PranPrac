@@ -1,0 +1,14 @@
+-- Question 19: Delete Cascade
+
+CREATE TABLE Product(
+Pid INT PRIMARY KEY
+);
+
+CREATE TABLE Orders(
+Oid INT,
+Pid INT,
+FOREIGN KEY(Pid) REFERENCES Product(Pid)
+ON DELETE CASCADE
+);
+
+DELETE FROM Product WHERE Pid=1;

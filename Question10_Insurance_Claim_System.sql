@@ -1,0 +1,22 @@
+-- Question 10: Insurance Claim System
+
+CREATE TABLE Customer(
+Cid INT PRIMARY KEY,
+Cname VARCHAR(50)
+);
+
+CREATE TABLE Policy(
+Pid INT PRIMARY KEY,
+Cid INT,
+Premium DECIMAL(10,2),
+FOREIGN KEY(Cid) REFERENCES Customer(Cid)
+);
+
+CREATE TABLE Claim(
+Clid INT PRIMARY KEY,
+Pid INT,
+Amount DECIMAL(10,2),
+FOREIGN KEY(Pid) REFERENCES Policy(Pid)
+);
+
+SELECT * FROM Claim WHERE Amount>10000;

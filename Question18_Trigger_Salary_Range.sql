@@ -1,0 +1,17 @@
+-- Question 18: Salary Range Trigger
+
+CREATE TABLE Employee(
+Eid INT,
+Ename VARCHAR(50),
+Salary NUMBER
+);
+
+CREATE OR REPLACE TRIGGER trg_salary
+BEFORE INSERT OR UPDATE ON Employee
+FOR EACH ROW
+BEGIN
+IF :NEW.Salary<20000 OR :NEW.Salary>80000 THEN
+RAISE_APPLICATION_ERROR(-20002,'Salary out of range');
+END IF;
+END;
+/
