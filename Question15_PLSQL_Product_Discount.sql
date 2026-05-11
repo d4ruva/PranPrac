@@ -13,3 +13,9 @@ UPDATE Product
 SET Price=Price-(Price*0.10);
 END;
 /
+
+-- To execute the discount
+BEGIN
+    Calc_Discount;
+END;
+/
