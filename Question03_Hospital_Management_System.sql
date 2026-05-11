@@ -21,3 +21,27 @@ FOREIGN KEY(Did) REFERENCES Doctor(Did)
 );
 
 SELECT * FROM Patient WHERE Age>50;
+
+-- ii. Count patients per doctor
+SELECT Did, COUNT(Pid) AS Patient_Count
+FROM Visit
+GROUP BY Did;
+
+-- iii. Display patient name with doctor name using JOIN
+SELECT P.Pname, D.Dname
+FROM Patient P
+INNER JOIN Visit V ON P.Pid = V.Pid
+INNER JOIN Doctor D ON V.Did = D.Did;
+
+-- iv. Display patients treated by doctors having specialization "Cardiology" using nested query
+SELECT Pname
+FROM Patient
+WHERE Pid IN (
+    SELECT Pid
+    FROM Visit
+    WHERE Did IN (
+        SELECT Did
+        FROM Doctor
+        WHERE Specialization = 'Cardiology'
+    )
+);

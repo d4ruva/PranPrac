@@ -21,3 +21,14 @@ RETURN 'Class III';
 END IF;
 END;
 /
+
+-- To execute and display classifications
+DECLARE
+    v_class VARCHAR2(10);
+BEGIN
+    FOR rec IN (SELECT Ename, Salary FROM Employee) LOOP
+        v_class := Classify_Salary(rec.Salary);
+        DBMS_OUTPUT.PUT_LINE(rec.Ename || ' - Class: ' || v_class);
+    END LOOP;
+END;
+/

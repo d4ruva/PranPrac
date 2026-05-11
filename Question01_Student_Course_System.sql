@@ -34,3 +34,22 @@ SELECT * FROM Student WHERE City='Pune';
 SELECT Cid, COUNT(Sid) AS Student_Count
 FROM Enrollment
 GROUP BY Cid;
+
+-- iii. Display student name with course name using JOIN
+SELECT S.Sname, C.Cname
+FROM Student S
+INNER JOIN Enrollment E ON S.Sid = E.Sid
+INNER JOIN Course C ON E.Cid = C.Cid;
+
+-- iv. Display students enrolled in the course "DBMS" using nested query
+SELECT Sname
+FROM Student
+WHERE Sid IN (
+    SELECT Sid
+    FROM Enrollment
+    WHERE Cid = (
+        SELECT Cid
+        FROM Course
+        WHERE Cname = 'DBMS'
+    )
+);

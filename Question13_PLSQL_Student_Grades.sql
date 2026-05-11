@@ -21,3 +21,14 @@ p_grade:='C';
 END IF;
 END;
 /
+
+-- To execute and display grades
+DECLARE
+    v_grade VARCHAR2(1);
+BEGIN
+    FOR rec IN (SELECT Name, Marks FROM Student) LOOP
+        Assign_Grade(rec.Marks, v_grade);
+        DBMS_OUTPUT.PUT_LINE(rec.Name || ' - Grade: ' || v_grade);
+    END LOOP;
+END;
+/
