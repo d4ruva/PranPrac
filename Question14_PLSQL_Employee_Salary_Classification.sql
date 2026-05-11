@@ -1,34 +1,44 @@
 -- Question 14: Employee Salary Classification
 
+CREATE DATABASE EmployeeDB;
+USE EmployeeDB;
+
 CREATE TABLE Employee(
-Eid INT,
-Ename VARCHAR(50),
-Salary NUMBER
+    Eid INT PRIMARY KEY,
+    Ename VARCHAR(30),
+    Salary INT,
+    Class VARCHAR(20)
 );
 
-CREATE OR REPLACE FUNCTION Classify_Salary(
-sal NUMBER
-)
-RETURN VARCHAR2
-IS
-BEGIN
-IF sal>=70000 THEN
-RETURN 'Class I';
-ELSIF sal>=40000 THEN
-RETURN 'Class II';
-ELSE
-RETURN 'Class III';
-END IF;
-END;
-/
+INSERT INTO Employee VALUES(1,'Amit',60000,NULL);
+INSERT INTO Employee VALUES(2,'Neha',45000,NULL);
+INSERT INTO Employee VALUES(3,'Rahul',30000,NULL);
+INSERT INTO Employee VALUES(4,'Pooja',18000,NULL);
 
--- To execute and display classifications
-DECLARE
-    v_class VARCHAR2(10);
+DELIMITER //
+CREATE FUNCTION GetClass(sal INT)
+RETURNS VARCHAR(20)
+DETERMINISTIC
 BEGIN
-    FOR rec IN (SELECT Ename, Salary FROM Employee) LOOP
-        v_class := Classify_Salary(rec.Salary);
-        DBMS_OUTPUT.PUT_LINE(rec.Ename || ' - Class: ' || v_class);
-    END LOOP;
-END;
-/
+    DECLARE emp_class VARCHAR(20);
+    IF sal >= 50000 THEN
+        SET emp_class = 'Class I';
+    ELSEIF sal >= 40000 THEN
+        SET emp_class = 'Class II';
+    ELSEIF sal >= 25000 THEN
+        SET emp_class = 'Class III';
+    ELSE
+        SET emp_class = 'Class IV';
+    END IF;
+    RETURN emp_class;
+END //
+DELIMITER ;
+
+UPDATE Employee
+SET Class = GetClass(Salary);
+
+SELECT * FROM Employee;
+
+SELECT Class, COUNT(*) AS Total_Employees
+FROM Employee
+GROUP BY Class;

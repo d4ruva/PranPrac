@@ -1,34 +1,59 @@
 -- Question 13: PL/SQL Student Grades
 
+CREATE DATABASE StudentDB;
+USE StudentDB;
+
 CREATE TABLE Student(
-Sid INT,
-Name VARCHAR(50),
-Marks INT
+    Sid INT PRIMARY KEY,
+    Name VARCHAR(30),
+    Marks INT,
+    Grade CHAR(1)
 );
 
-CREATE OR REPLACE PROCEDURE Assign_Grade(
-p_marks IN NUMBER,
-p_grade OUT VARCHAR2
-)
-IS
-BEGIN
-IF p_marks>=75 THEN
-p_grade:='A';
-ELSIF p_marks>=60 THEN
-p_grade:='B';
-ELSE
-p_grade:='C';
-END IF;
-END;
-/
+INSERT INTO Student VALUES(1,'Amit',85,NULL);
+INSERT INTO Student VALUES(2,'Neha',72,NULL);
+INSERT INTO Student VALUES(3,'Rahul',60,NULL);
+INSERT INTO Student VALUES(4,'Pooja',45,NULL);
 
--- To execute and display grades
-DECLARE
-    v_grade VARCHAR2(1);
+DELIMITER //
+CREATE PROCEDURE AssignGrade()
 BEGIN
-    FOR rec IN (SELECT Name, Marks FROM Student) LOOP
-        Assign_Grade(rec.Marks, v_grade);
-        DBMS_OUTPUT.PUT_LINE(rec.Name || ' - Grade: ' || v_grade);
+    UPDATE Student
+    SET Grade =
+    CASE
+        WHEN Marks >= 75 THEN 'A'
+        WHEN Marks >= 60 THEN 'B'
+        WHEN Marks >= 50 THEN 'C'
+        ELSE 'D'
+    END;
+END //
+DELIMITER ;
+
+CALL AssignGrade();
+
+DELIMITER //
+CREATE PROCEDURE DisplayGrades()
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE sname VARCHAR(30);
+    DECLARE g CHAR(1);
+    DECLARE cur CURSOR FOR
+        SELECT Name, Grade FROM Student;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    OPEN cur;
+    read_loop: LOOP
+        FETCH cur INTO sname, g;
+        IF done = 1 THEN
+            LEAVE read_loop;
+        END IF;
+        SELECT sname AS Name, g AS Grade;
     END LOOP;
-END;
-/
+    CLOSE cur;
+END //
+DELIMITER ;
+
+CALL DisplayGrades();
+
+SELECT Grade, COUNT(*) AS Total_Students
+FROM Student
+GROUP BY Grade;

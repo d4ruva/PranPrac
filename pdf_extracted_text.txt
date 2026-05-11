@@ -1,0 +1,766 @@
+---PAGE 1---
+This is a copy of a shared ChatGPT conversation
+Repor t conv ersation
+Now I will share some problem statements of dbms mysql  
+..give me simple code for this..in short which sufficient for  
+create table and database..
+Give me it in simple English language. 
+With also viva..questions with ans
+Sure. Send the DBMS/MySQL problem statements one by one or all together.
+For each problem statement, I’ll give:
+Simple ER idea
+Short and easy MySQL code
+CREA TE DATABASE + CREA TE TABLE statements
+Simple INSER T values (if needed)
+Important SQL queries
+Viva questions with short answers
+Explanation in simple English
+I’ll keep the code:
+Easy to write in practical exam
+Short and sufficient
+Beginner-friendly
+Using simple SQL syntax only
+Send the problem statements.
+Create table S tudent (Sid, Name, Marks) table. Write and  
+execute following PL/SQL statements:
+i. Write a PL/SQL procedure to assign grade.
+ii. Write a cursor-based PL/SQL block to display grades.
+iii. Count students in each grade.
+Student T able PL/SQL Pr ogram
+1) Create Datab ase and T able
+
+---PAGE 2---
+2) Inser t Sample Data
+i) PL/SQL Pr ocedur e to Assign Grade
+Logic
+Marks >= 75 → A
+Marks >= 60 → B
+Marks >= 50 → C
+Else → D
+CREATE DATABASE StudentDB;
+USE StudentDB;
+CREATE TABLE Student(
+    Sid INT PRIMARY KEY,
+    Name VARCHAR(30),
+    Marks INT,
+    Grade CHAR(1)
+);
+INSERT INTO Student VALUES(1,'Amit',85,NULL);
+INSERT INTO Student VALUES(2,'Neha',72,NULL);
+INSERT INTO Student VALUES(3,'Rahul',60,NULL);
+INSERT INTO Student VALUES(4,'Pooja',45,NULL);
+DELIMITER //
+CREATE PROCEDURE  AssignGrade()
+BEGIN
+UPDATE Student
+SET Grade =
+CASE
+    WHEN Marks >= 75 THEN 'A'
+    WHEN Marks >= 60 THEN 'B'
+    WHEN Marks >= 50 THEN 'C'
+    ELSE 'D'
+END;
+SQL
+SQL
+
+---PAGE 3---
+Execute Procedur e
+ii) Cur sor-Based Block t o Display Grades
+Execute
+END //
+DELIMITER ;
+CALL AssignGrade();
+DELIMITER //
+CREATE PROCEDURE  DisplayGrades()
+BEGIN
+DECLARE done INT DEFAULT 0;
+DECLARE sname VARCHAR(30);
+DECLARE g CHAR(1);
+DECLARE cur CURSOR FOR
+SELECT Name, Grade FROM Student;
+DECLARE CONTINUE  HANDLER FOR NOT FOUND SET done = 1;
+OPEN cur;
+read_loop: LOOP
+FETCH cur INTO sname, g;
+IF done = 1 THEN
+    LEAVE read_loop;
+END IF;
+SELECT sname AS Name, g AS Grade;
+END LOOP;
+CLOSE cur;
+END //
+DELIMITER ;
+SQL
+SQL
+SQL
+
+---PAGE 4---
+iii) Count S tudents in Each Grade
+Output T able Example
+Sid Name Marks Grade
+1 Amit 85 A
+2 Neha 72 B
+3 Rahul 60 B
+4 Pooja 45 D
+Viva Questions with Answ ers
+1) What is PL/SQL ?
+PL/SQL is Procedural Language used with SQL for programming.
+2) What is a Pr ocedur e?
+Procedure is a stored program that performs a task.
+3) What is Cur sor?
+Cursor is used to fetch records one by one from a table.
+CALL DisplayGrades();
+SELECT Grade, COUNT(*) AS Total_Students
+FROM Student
+GROUP BY Grade;
+SQL
+SQL
+
+---PAGE 5---
+4) Why PRIMAR Y KEY is used?
+PRIMAR Y KEY uniquely identifies each row.
+5) What is CASE stat ement ?
+CASE is used for conditional checking.
+6) What is GR OUP B Y?
+GROUP B Y is used to group similar data.
+7) Differ ence betw een SQL and PL/SQL ?
+SQL PL/SQL
+Query language Programming language
+Executes single query Executes block of code
+Impor tant Shor t Commands for Viv a
+SHOW DATABASES;
+SHOW TABLES;
+DESC Student;
+SELECT * FROM Student;
+ SQL
+Create Employee (Eid, Ename, Salary) table. Write and  
+execute following PL/SQL statements:
+i. Write a PL/SQL function to classify salary. ii. Display  
+classification (Class I, Class II, etc).
+iii. Count employees in each class.
+Employ ee Table PL/SQL Pr ogram
+1) Create Datab ase and T able
+
+---PAGE 6---
+2) Inser t Sample Data
+i) PL/SQL Function t o Classif y Salar y
+Logic
+Salary >= 50000 → Class I
+Salary >= 40000 → Class II
+Salary >= 25000 → Class III
+Else → Class IV
+CREATE DATABASE EmployeeDB;
+USE EmployeeDB;
+CREATE TABLE Employee(
+    Eid INT PRIMARY KEY,
+    Ename VARCHAR(30),
+    Salary INT,
+    Class VARCHAR(20)
+);
+INSERT INTO Employee VALUES(1,'Amit',60000,NULL);
+INSERT INTO Employee VALUES(2,'Neha',45000,NULL);
+INSERT INTO Employee VALUES(3,'Rahul',30000,NULL);
+INSERT INTO Employee VALUES(4,'Pooja',18000,NULL);
+DELIMITER //
+CREATE FUNCTION  GetClass(sal INT)
+RETURNS VARCHAR(20)
+DETERMINISTIC
+BEGIN
+DECLARE emp_class VARCHAR(20);
+IF sal >= 50000 THEN
+    SET emp_class = 'Class I' ;
+SQL
+SQL
+
+---PAGE 7---
+ii) Display Classification
+Updat e Employ ee Class
+Display T able
+iii) Count Employ ees in Each Class
+Output Example
+ELSEIF sal >= 40000 THEN
+    SET emp_class = 'Class II' ;
+ELSEIF sal >= 25000 THEN
+    SET emp_class = 'Class III' ;
+ELSE
+    SET emp_class = 'Class IV' ;
+END IF;
+RETURN emp_class;
+END //
+DELIMITER ;
+UPDATE Employee
+SET Class = GetClass(Salary);
+SELECT * FROM Employee;
+SELECT Class, COUNT(*) AS Total_Employees
+FROM Employee
+GROUP BY Class;
+SQL
+SQL
+SQL
+SQL
+
+---PAGE 8---
+Eid Ename Salar y Class
+1 Amit 60000 Class I
+2 Neha 45000 Class II
+3 Rahul 30000 Class III
+4 Pooja 18000 Class IV
+Viva Questions with Answ ers
+1) What is Function in PL/SQL ?
+Function is a stored program that returns a value.
+2) Differ ence betw een Function and Pr ocedur e?
+Function Procedur e
+Returns value Does not return value
+Used in query Called separately
+3) What is DELIMITER?
+DELIMITER changes the end symbol of SQL statement.
+4) What is RE TURN in Function?
+RETURN sends value back from function.
+5) What is GR OUP B Y?
+GROUP B Y groups similar rows together.
+6) What is DE TERMINISTIC ?
+It means function gives same output for same input.
+
+---PAGE 9---
+7) Why PRIMAR Y KEY is used?
+To uniquely identify each employee.
+Impor tant Commands
+SHOW DATABASES;
+SHOW TABLES;
+DESC Employee;
+SELECT * FROM Employee;
+ SQL
+Create Product (Pid, Pname, Price) table. Write and execute  
+following PL/SQL statements:
+i. Write a PL/SQL procedure to calculate discount. ii. 
+Display updated prices.
+iii. Find maximum priced product.
+Product T able PL/SQL Pr ogram
+1) Create Datab ase and T able
+2) Inser t Sample Data
+CREATE DATABASE ProductDB;
+USE ProductDB;
+CREATE TABLE Product(
+    Pid INT PRIMARY KEY,
+    Pname VARCHAR(30),
+    Price INT
+);
+SQL
+
+---PAGE 10---
+i) PL/SQL Pr ocedur e to Calculat e Discount
+Logic
+10% discount on all products
+Execute Procedur e
+ii) Display Updat ed Prices
+iii) Find Maximum Priced Pr oduct
+INSERT INTO Product VALUES(1,'Laptop' ,50000);
+INSERT INTO Product VALUES(2,'Mobile' ,20000);
+INSERT INTO Product VALUES(3,'TV',30000);
+INSERT INTO Product VALUES(4,'Mouse',1000);
+DELIMITER //
+CREATE PROCEDURE  DiscountPrice()
+BEGIN
+UPDATE Product
+SET Price = Price - (Price * 0.10);
+END //
+DELIMITER ;
+CALL DiscountPrice();
+SELECT * FROM Product;
+SQL
+SQL
+SQL
+SQL
+
+---PAGE 11---
+Output Example
+Pid Pname Price
+1 Laptop 45000
+2 Mobile 18000
+3 TV 27000
+4 Mouse 900
+Viva Questions with Answ ers
+1) What is Pr ocedur e?
+Procedure is a stored SQL program used to perform task.
+2) What is UPD ATE stat ement ?
+UPDATE changes existing data in table.
+3) What is MAX() function?
+MAX() returns highest value from column.
+4) What is PRIMAR Y KEY?
+PRIMAR Y KEY uniquely identifies records.
+5) Why DELIMITER is used?
+DELIMITER changes statement ending symbol.
+SELECT *
+FROM Product
+WHERE Price = (SELECT MAX(Price) FROM Product);
+ SQL
+
+---PAGE 12---
+6) What is Aggr egate Function?
+Functions like MAX(), MIN(), C OUNT(), A VG() are aggregate functions.
+7) Differ ence betw een DELE TE and DR OP?
+DELE TE DROP
+Deletes rows Deletes whole table
+Table exists Table removed
+Impor tant Commands
+SHOW DATABASES;
+SHOW TABLES;
+DESC Product;
+SELECT * FROM Product;
+ SQL
+Create Issue (Bid, Mid, IssueDate, R eturnDate) table.Write  
+and execute following PL/SQL statements:
+i. Write a PL/SQL function to calculate fine. ii. Display  
+fine.
+iii. Find highest fine.
+Issue T able PL/SQL Pr ogram
+1) Create Datab ase and T able
+CREATE DATABASE LibraryDB;
+USE LibraryDB;
+
+
+---PAGE 13---
+2) Inser t Sample Data
+i) PL/SQL Function t o Calculat e Fine
+Logic
+Fine = Rs.10 per extra day after 7 days
+CREATE TABLE Issue(
+    Bid INT,
+    Mid INT,
+    IssueDate DATE,
+    ReturnDate DATE,
+    Fine INT
+);
+INSERT INTO Issue VALUES
+(1,101,'2025-01-01' ,'2025-01-10' ,NULL);
+INSERT INTO Issue VALUES
+(2,102,'2025-01-01' ,'2025-01-20' ,NULL);
+INSERT INTO Issue VALUES
+(3,103,'2025-01-01' ,'2025-01-05' ,NULL);
+DELIMITER //
+CREATE FUNCTION  CalculateFine(
+    issue_date DATE,
+    return_date DATE
+)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+DECLARE days INT;
+DECLARE fine_amt INT;
+SET days = DATEDIFF(return_date, issue_date);
+IF days > 7 THEN
+SQL
+SQL
+
+---PAGE 14---
+Updat e Fine in T able
+ii) Display Fine
+iii) Find Highest Fine
+Output Example
+Bid Mid IssueDat e ReturnDat e Fine
+1 101 2025-01-01 2025-01-10 20
+2 102 2025-01-01 2025-01-20 120
+    SET fine_amt = (days - 7) * 10;
+ELSE
+    SET fine_amt = 0;
+END IF;
+RETURN fine_amt;
+END //
+DELIMITER ;
+UPDATE Issue
+SET Fine = CalculateFine(IssueDate, ReturnDate);
+SELECT * FROM Issue;
+SELECT *
+FROM Issue
+WHERE Fine = (SELECT MAX(Fine) FROM Issue);
+SQL
+SQL
+SQL
+SQL
+
+---PAGE 15---
+Bid Mid IssueDat e ReturnDat e Fine
+3 103 2025-01-01 2025-01-05 0
+Viva Questions with Answ ers
+1) What is Function in PL/SQL ?
+Function is a stored program that returns value.
+2) What is D ATEDIFF()?
+DATEDIFF() finds difference between two dates.
+3) What is MAX() function?
+MAX() returns highest value.
+4) What is UPD ATE stat ement ?
+UPDATE changes existing records.
+5) What is DE TERMINISTIC ?
+Same input gives same output.
+6) Why Fine column is used?
+To store calculated fine amount.
+7) Differ ence betw een D ATE and INT datatype?
+DATE INT
+Stores date Stores numbers
+
+---PAGE 16---
+Impor tant Commands
+SHOW DATABASES;
+SHOW TABLES;
+DESC Issue;
+SELECT * FROM Issue;
+ SQL
+Create Account (Aid, Balance) table. Write and execute  
+following statements:
+i. Create a trigger to prevent negative balance. ii. Verify 
+using update statements.
+iii. Display minimum balance.
+Account T able T rigger Pr ogram
+1) Create Datab ase and T able
+2) Inser t Sample Data
+CREATE DATABASE BankDB;
+USE BankDB;
+CREATE TABLE Account(
+    Aid INT PRIMARY KEY,
+    Balance INT
+);
+INSERT INTO Account VALUES(1,5000);
+INSERT INTO Account VALUES(2,8000);
+INSERT INTO Account VALUES(3,3000);
+SQL
+SQL
+
+---PAGE 17---
+i) Create Trigger t o Prevent Negativ e Balance
+ii) Verify Using UPD ATE Statements
+Valid Updat e
+Invalid Updat e
+Output
+DELIMITER //
+CREATE TRIGGER CheckBalance
+BEFORE UPDATE
+ON Account
+FOR EACH ROW
+BEGIN
+IF NEW.Balance < 0 THEN
+    SIGNAL SQLSTATE  '45000'
+    SET MESSAGE_TEXT = 'Negative balance not allowed' ;
+END IF;
+END //
+DELIMITER ;
+UPDATE Account
+SET Balance = 2000
+WHERE Aid = 1;
+UPDATE Account
+SET Balance = -1000
+WHERE Aid = 2;
+ERROR: Negative balance not allowed
+SQL
+SQL
+SQL
+
+---PAGE 18---
+Display T able
+iii) Display Minimum Balance
+Output Example
+Aid Balance
+1 2000
+2 8000
+3 3000
+Viva Questions with Answ ers
+1) What is T rigger?
+Trigger is automatic action performed when event occurs.
+2) What is BEFORE UPD ATE Trigger?
+It runs before updating records.
+3) What is NE W keyword?
+NEW refers to new value being updated.
+4) What is SIGNAL stat ement ?
+SELECT * FROM Account;
+SELECT MIN(Balance) AS Minimum_Balance
+FROM Account;
+SQL
+SQL
+
+---PAGE 19---
+SIGNAL displays custom error message.
+5) What is MIN() function?
+MIN() returns smallest value.
+6) Why PRIMAR Y KEY is used?
+To uniquely identify account.
+7) Differ ence betw een T rigger and Pr ocedur e?
+Trigger Procedur e
+Automatic execution Manual execution
+Event based User called
+Impor tant Commands
+SHOW DATABASES;
+SHOW TABLES;
+DESC Account;
+SELECT * FROM Account;
+ SQL
+Create Employee (Eid, Ename, Salary) table. Write and  
+execute following statements:
+i. Create a trigger to enforce salary range (20000–80000).
+ii. Update and verify.
+iii. Display average salary.
+Employ ee Table T rigger Pr ogram
+
+---PAGE 20---
+1) Create Datab ase and T able
+2) Inser t Sample Data
+i) Create Trigger t o Enfor ce Salar y Range
+Condition
+Salary must be between 20000 and 80000
+CREATE DATABASE CompanyDB;
+USE CompanyDB;
+CREATE TABLE Employee(
+    Eid INT PRIMARY KEY,
+    Ename VARCHAR(30),
+    Salary INT
+);
+INSERT INTO Employee VALUES(1,'Amit',30000);
+INSERT INTO Employee VALUES(2,'Neha',50000);
+INSERT INTO Employee VALUES(3,'Rahul',70000);
+DELIMITER //
+CREATE TRIGGER SalaryCheck
+BEFORE UPDATE
+ON Employee
+FOR EACH ROW
+BEGIN
+IF NEW.Salary < 20000 OR NEW.Salary > 80000 THEN
+SIGNAL SQLSTATE  '45000'
+SET MESSAGE_TEXT = 'Salary must be between 20000 and 80000' ;
+END IF;
+END //
+SQL
+SQL
+
+---PAGE 21---
+ii) Updat e and V erify
+Valid Updat e
+Invalid Updat e
+Output
+Display T able
+iii) Display A verage Salar y
+DELIMITER ;
+UPDATE Employee
+SET Salary = 60000
+WHERE Eid = 1;
+UPDATE Employee
+SET Salary = 10000
+WHERE Eid = 2;
+ERROR: Salary must be between 20000 and 80000
+SELECT * FROM Employee;
+SELECT AVG(Salary) AS Average_Salary
+FROM Employee;
+SQL
+SQL
+SQL
+SQL
+SQL
+
+---PAGE 22---
+Output Example
+Eid Ename Salar y
+1 Amit 60000
+2 Neha 50000
+3 Rahul 70000
+Viva Questions with Answ ers
+1) What is T rigger?
+Trigger is automatic action performed on database event.
+2) What is BEFORE UPD ATE Trigger?
+It executes before update operation.
+3) What is NE W keyword?
+NEW represents new updated value.
+4) What is A VG() function?
+AVG() calculates average value.
+5) Why SIGNAL is used?
+SIGNAL displays custom error message.
+6) What is PRIMAR Y KEY?
+PRIMAR Y KEY uniquely identifies each employee.
+7) Differ ence betw een A VG() and SUM()?
+
+---PAGE 23---
+AVG() SUM()
+Finds average Finds total
+Impor tant Commands
+SHOW DATABASES;
+SHOW TABLES;
+DESC Employee;
+SELECT * FROM Employee;
+ SQL
+Create Product(Pid) and Orders (Oid, Pid) tables.Write and  
+execute following statements:
+i. Create a trigger for delete cascade. ii. Verify deletion.
+iii. Count remaining orders.
+Product and Or ders Trigger Pr ogram
+1) Create Datab ase and T ables
+2) Inser t Sample Data
+CREATE DATABASE ShopDB;
+USE ShopDB;
+CREATE TABLE Product(
+    Pid INT PRIMARY KEY
+);
+CREATE TABLE Orders(
+    Oid INT PRIMARY KEY,
+    Pid INT
+);
+SQL
+
+---PAGE 24---
+i) Create Trigger for Delet e Cascade
+When pr oduct is delet ed, related or ders also delet ed
+ii) Verify Deletion
+Delet e Product
+Display Pr oduct T able
+INSERT INTO Product VALUES(1);
+INSERT INTO Product VALUES(2);
+INSERT INTO Orders VALUES(101,1);
+INSERT INTO Orders VALUES(102,1);
+INSERT INTO Orders VALUES(103,2);
+DELIMITER //
+CREATE TRIGGER DeleteCascade
+BEFORE DELETE
+ON Product
+FOR EACH ROW
+BEGIN
+DELETE FROM Orders
+WHERE Pid = OLD.Pid;
+END //
+DELIMITER ;
+DELETE FROM Product
+WHERE Pid = 1;
+SQL
+SQL
+SQL
+SQL
+
+---PAGE 25---
+Display Or ders Table
+iii) Count R emaining Or ders
+Output Example
+Product T able
+Pid
+2
+Orders Table
+Oid Pid
+103 2
+Viva Questions with Answ ers
+1) What is T rigger?
+Trigger is automatic SQL action.
+2) What is DELE TE Trigger?
+SELECT * FROM Product;
+SELECT * FROM Orders;
+SELECT COUNT(*) AS Remaining_Orders
+FROM Orders;
+SQL
+SQL
+SQL
+
+---PAGE 26---
+It runs automatically during delete operation.
+3) What is OLD k eyword?
+OLD stores old record values before deletion.
+4) What is Cascade Delet e?
+Deleting parent record also deletes child records.
+5) What is C OUNT(*)?
+COUNT(*) counts total rows.
+6) Why PRIMAR Y KEY is used?
+To uniquely identify records.
+7) Differ ence betw een BEFORE DELE TE and AF TER DELE TE?
+BEFORE DELE TE AFTER DELE TE
+Runs before deletion Runs after deletion
+Impor tant Commands
+SHOW DATABASES;
+SHOW TABLES;
+DESC Product;
+DESC Orders;
+SELECT * FROM Product;
+SELECT * FROM Orders;
+ SQL
+
+---PAGE 27---
+Create S tudent (Sid, Marks) table. Write and execute  
+following statements:
+i. Create a trigger to validate marks (0–100). ii. Update  
+and verify.
+iii. Display maximum marks.
+Student T able T rigger Pr ogram
+1) Create Datab ase and T able
+2) Inser t Sample Data
+i) Create Trigger t o Validat e Marks
+Condition
+Marks must be between 0 and 100
+CREATE DATABASE SchoolDB;
+USE SchoolDB;
+CREATE TABLE Student(
+    Sid INT PRIMARY KEY,
+    Marks INT
+);
+INSERT INTO Student VALUES(1,85);
+INSERT INTO Student VALUES(2,72);
+INSERT INTO Student VALUES(3,60);
+DELIMITER //
+CREATE TRIGGER CheckMarks
+BEFORE UPDATE
+ON Student
+SQL
+SQL
+
+---PAGE 28---
+ii) Updat e and V erify
+Valid Updat e
+Invalid Updat e
+Output
+Display T able
+FOR EACH ROW
+BEGIN
+IF NEW.Marks < 0 OR NEW.Marks > 100 THEN
+SIGNAL SQLSTATE  '45000'
+SET MESSAGE_TEXT = 'Marks must be between 0 and 100' ;
+END IF;
+END //
+DELIMITER ;
+UPDATE Student
+SET Marks = 90
+WHERE Sid = 1;
+UPDATE Student
+SET Marks = 120
+WHERE Sid = 2;
+ERROR: Marks must be between 0 and 100
+SELECT * FROM Student;
+SQL
+SQL
+SQL
+SQL
+
+---PAGE 29---
+iii) Display Maximum Marks
+Output Example
+Sid Marks
+1 90
+2 72
+3 60
+Viva Questions with Answ ers
+1) What is T rigger?
+Trigger is automatic action executed on database event.
+2) What is BEFORE UPD ATE Trigger?
+It runs before updating records.
+3) What is NE W keyword?
+NEW represents new value after update.
+4) What is MAX() function?
+MAX() returns highest value.
+5) Why SIGNAL stat ement is used?
+To display custom error message.
+SELECT MAX(Marks) AS Maximum_Marks
+FROM Student;
+SQL
+ChatGPT Get Plus
+
+---PAGE 30---
+6) What is PRIMAR Y KEY?
+PRIMAR Y KEY uniquely identifies records.
+7) Differ ence betw een MAX() and MIN()?
+MAX() MIN()
+Highest value Lowest value
+Impor tant Commands
+SHOW DATABASES;
+SHOW TABLES;
+DESC Student;
+SELECT * FROM Student;
+SQL
+
