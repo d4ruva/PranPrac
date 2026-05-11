@@ -1,21 +1,30 @@
 -- Question 15: Product Discount
 
+CREATE DATABASE ProductDB;
+USE ProductDB;
+
 CREATE TABLE Product(
-Pid INT,
-Pname VARCHAR(50),
-Price NUMBER
+    Pid INT PRIMARY KEY,
+    Pname VARCHAR(30),
+    Price INT
 );
 
-CREATE OR REPLACE PROCEDURE Calc_Discount
-IS
-BEGIN
-UPDATE Product
-SET Price=Price-(Price*0.10);
-END;
-/
+INSERT INTO Product VALUES(1,'Laptop',50000);
+INSERT INTO Product VALUES(2,'Mobile',20000);
+INSERT INTO Product VALUES(3,'TV',30000);
+INSERT INTO Product VALUES(4,'Mouse',1000);
 
--- To execute the discount
+DELIMITER //
+CREATE PROCEDURE DiscountPrice()
 BEGIN
-    Calc_Discount;
-END;
-/
+    UPDATE Product
+    SET Price = Price - (Price * 0.10);
+END //
+DELIMITER ;
+
+CALL DiscountPrice();
+
+SELECT * FROM Product;
+
+SELECT * FROM Product
+WHERE Price = (SELECT MAX(Price) FROM Product);

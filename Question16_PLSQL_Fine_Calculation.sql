@@ -1,36 +1,44 @@
 -- Question 16: Fine Calculation
 
+CREATE DATABASE LibraryDB;
+USE LibraryDB;
+
 CREATE TABLE Issue(
-Bid INT,
-Mid INT,
-IssueDate DATE,
-ReturnDate DATE
+    Bid INT,
+    Mid INT,
+    IssueDate DATE,
+    ReturnDate DATE,
+    Fine INT
 );
 
-CREATE OR REPLACE FUNCTION Calculate_Fine(
-issue_date DATE,
-return_date DATE
-)
-RETURN NUMBER
-IS
-days NUMBER;
-BEGIN
-days := return_date - issue_date;
-IF days>7 THEN
-RETURN (days-7)*5;
-ELSE
-RETURN 0;
-END IF;
-END;
-/
+INSERT INTO Issue VALUES(1,101,'2025-01-01','2025-01-10',NULL);
+INSERT INTO Issue VALUES(2,102,'2025-01-01','2025-01-20',NULL);
+INSERT INTO Issue VALUES(3,103,'2025-01-01','2025-01-05',NULL);
 
--- To calculate and display fines
-DECLARE
-    v_fine NUMBER;
+DELIMITER //
+CREATE FUNCTION CalculateFine(
+    issue_date DATE,
+    return_date DATE
+)
+RETURNS INT
+DETERMINISTIC
 BEGIN
-    FOR rec IN (SELECT Bid, Mid, IssueDate, ReturnDate FROM Issue) LOOP
-        v_fine := Calculate_Fine(rec.IssueDate, rec.ReturnDate);
-        DBMS_OUTPUT.PUT_LINE('Book ' || rec.Bid || ' by Member ' || rec.Mid || ' - Fine: ' || v_fine);
-    END LOOP;
-END;
-/
+    DECLARE days INT;
+    DECLARE fine_amt INT;
+    SET days = DATEDIFF(return_date, issue_date);
+    IF days > 7 THEN
+        SET fine_amt = (days - 7) * 10;
+    ELSE
+        SET fine_amt = 0;
+    END IF;
+    RETURN fine_amt;
+END //
+DELIMITER ;
+
+UPDATE Issue
+SET Fine = CalculateFine(IssueDate, ReturnDate);
+
+SELECT * FROM Issue;
+
+SELECT * FROM Issue
+WHERE Fine = (SELECT MAX(Fine) FROM Issue);
