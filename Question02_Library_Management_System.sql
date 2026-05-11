@@ -1,40 +1,71 @@
--- Question 2: Library Management System
+-- Create Database
+CREATE DATABASE LibraryDB;
 
+-- Use Database
+USE LibraryDB;
+
+-- Create Book Table
 CREATE TABLE Book(
-Bid INT PRIMARY KEY,
-Title VARCHAR(50),
-Price DECIMAL(10,2),
-Dept VARCHAR(50)
+    Bid INT PRIMARY KEY,
+    Title VARCHAR(50) NOT NULL,
+    Price DECIMAL(10,2),
+    Dept VARCHAR(50)
 );
 
+-- Create Member Table
 CREATE TABLE Member(
-Mid INT PRIMARY KEY,
-Mname VARCHAR(50)
+    Mid INT PRIMARY KEY,
+    Mname VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE Issue(
-Bid INT,
-Mid INT,
-IssueDate DATE,
-FOREIGN KEY(Bid) REFERENCES Book(Bid),
-FOREIGN KEY(Mid) REFERENCES Member(Mid)
+-- Create Issue Table
+CREATE TABLE IssueBook(
+    Bid INT,
+    Mid INT,
+    IssueDate DATE,
+    PRIMARY KEY(Bid, Mid),
+    FOREIGN KEY(Bid) REFERENCES Book(Bid),
+    FOREIGN KEY(Mid) REFERENCES Member(Mid)
 );
 
-SELECT * FROM Book WHERE Dept='Computer';
+-- Insert Data
+INSERT INTO Book VALUES
+(101,'DBMS',500,'Computer'),
+(102,'Java',450,'Computer'),
+(103,'Physics',300,'Science');
 
-SELECT COUNT(*) AS Total_Books_Issued FROM Issue;
+INSERT INTO Member VALUES
+(1,'Amit'),
+(2,'Neha');
+
+INSERT INTO IssueBook VALUES
+(101,1,'2025-05-10'),
+(102,2,'2025-05-11');
+
+-- i. Display books from Computer department
+SELECT * FROM Book
+WHERE Dept='Computer';
+
+-- ii. Count number of books issued
+SELECT COUNT(Bid) AS Total_Books_Issued
+FROM IssueBook;
 
 -- iii. Display book title with member name using JOIN
-SELECT B.Title, M.Mname
-FROM Book B
-INNER JOIN Issue I ON B.Bid = I.Bid
-INNER JOIN Member M ON I.Mid = M.Mid;
+SELECT Book.Title, Member.Mname
+FROM Book
+JOIN IssueBook ON Book.Bid = IssueBook.Bid
+JOIN Member ON Member.Mid = IssueBook.Mid;
 
--- iv. Display books issued by members using nested query
+-- iv. Display books issued by members using Nested Query
 SELECT Title
 FROM Book
-WHERE EXISTS (
-    SELECT 1
-    FROM Issue
-    WHERE Issue.Bid = Book.Bid
+WHERE Bid IN
+(
+    SELECT Bid
+    FROM IssueBook
+    WHERE Mid IN
+    (
+        SELECT Mid
+        FROM Member
+    )
 );
